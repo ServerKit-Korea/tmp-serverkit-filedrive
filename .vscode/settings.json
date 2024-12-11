@@ -1,0 +1,18 @@
+{
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true, // 저장 시 자동 정렬
+    "typescript.tsdk": "node_modules/typescript/lib", // TypeScript SDK 설정
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "always"
+    },
+    "eslint.validate": [
+        "javascript",
+        "typescript"
+    ],
+    // JSON 형식에 주석을 포함하도록 가능.
+    "files.associations": {
+        "*.json": "jsonc"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "jest.runMode": "on-demand"
+}
