@@ -27,9 +27,11 @@
 - Node.js (v20 이상 권장)
 - 패키지 관리자: `npm`
 
-### 설치 방법
+### Serverkit Package 생성 방법
 
-1. 이 레포지토리를 클론합니다:
+아래 과정은 모두 Serverkit-Project Organization에 소속된 github 계정만 가능합니다. 소속되지 않았을 경우 관리자에게 문의하세요.
+
+1. github 사이트에서 이 레포지토리를 Fork합니다:
     ```bash
-    git clone https://github.com/your-repo/serverkit-template.git
+    https://github.com/ServerKit-Project/serverkit-package-template.git
     ```

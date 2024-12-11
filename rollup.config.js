@@ -29,7 +29,7 @@ export default [
             resolve(), // Node.js 스타일 모듈 해석
             typescript({
                 tsconfig: "./tsconfig.json",
-                declaration: true, // Rollup에서 .d.ts 파일 생성 비활성화
+                declaration: false, // Rollup에서 .d.ts 파일 생성 비활성화
                 sourceMap: isRelease
             }),
             terser({

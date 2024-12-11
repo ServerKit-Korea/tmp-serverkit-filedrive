@@ -1,9 +1,12 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,node
 
-# Secure and build folder
+# Secure
 .npmrc
 build/
+
+# package-lock.json → rollup 모듈이 개발환경 OS의 칩셋 환경에 따라 install시 모듈이 다르게 설치되므로 lock 파일의 존재가 무의미함.
+package-lock.json  
 
 ### macOS ###
 # General
