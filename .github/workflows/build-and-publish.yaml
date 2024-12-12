@@ -115,22 +115,44 @@ jobs:
 
             # 9. Create and push tag (main branch only)
             - name: Create and push tag
-              if: ${{ env.CURRENT_BRANCH == 'main' }}
               run: |
-                  git tag "v${{ env.NEW_VERSION }}"
-                  git push origin "v${{ env.NEW_VERSION }}"
+                  if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
+                      # dev Mode일 경우 태그에 dev 추가
+                      git tag "v${{ env.NEW_VERSION }}-dev"
+                      git push origin "v${{ env.NEW_VERSION }}-dev"
+                  elif [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
+                      git tag "v${{ env.NEW_VERSION }}"
+                      git push origin "v${{ env.NEW_VERSION }}"
+                  fi
 
             # 10. Publish package
             - name: Publish package
               run: |
                   if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
-                      # Main branch: Use standard npm publish
-                      npm publish
+                      if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
+                          # dev 모드 활성화
+                          TEMP_VERSION="${{ env.NEW_VERSION }}-dev"
+                          jq ".version = \"$TEMP_VERSION\"" package.json > package.tmp.json
+                          mv package.tmp.json package.json
+                          npm publish --tag dev
+                          git checkout -- package.json # Revert changes to package.json
+                      else
+                          npm publish
+                      fi
                   else
                       # Non-main branch: Use temporary version for publishing
                       TEMP_VERSION="${{ env.NEW_VERSION }}"
-                      jq ".version = \"$TEMP_VERSION\"" package.json > package.tmp.json
-                      mv package.tmp.json package.json
-                      npm publish --tag "${{ env.CURRENT_BRANCH }}"
-                      git checkout -- package.json # Revert changes to package.json
+                      if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
+                          # dev 모드 활성화
+                          TEMP_TAG="${{ env.CURRENT_BRANCH }}-dev"
+                          jq ".version = \"$TEMP_VERSION\"" package.json > package.tmp.json
+                          mv package.tmp.json package.json
+                          npm publish --tag "$TEMP_TAG"
+                          git checkout -- package.json # Revert changes to package.json
+                      else
+                          jq ".version = \"$TEMP_VERSION\"" package.json > package.tmp.json
+                          mv package.tmp.json package.json
+                          npm publish --tag "${{ env.CURRENT_BRANCH }}"
+                          git checkout -- package.json # Revert changes to package.json
+                      fi
                   fi
