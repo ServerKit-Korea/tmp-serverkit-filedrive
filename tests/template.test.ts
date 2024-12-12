@@ -8,11 +8,11 @@
 
 // Build 된 파일을 Git Action 처리하기 전 Jest 실행 시 환경 변수 초기화하는 목적입니다.
 // ▼ Build 된 모듈 테스트시에는 주석을 해제해주세요. TS_JEST의 작동방식을 벗어나므로 무조건 최상단에서 초기화를 시켜줘야 합니다.
-// process.env.TS_JEST = ""; 
+// process.env.TS_JEST = "";
 
 // Logger: Info
 function log(message: string) {
-    console.log(`\x1b[37m ℹ️ ${message}\x1b[0m`);
+    console.log(`\x1b[34m ℹ️ ${message}\x1b[0m`);
 }
 // Logger: Success
 function logSuccess(message: string) {
