@@ -7,7 +7,7 @@ import { dts } from "rollup-plugin-dts"; // 타입 선언 병합 플러그인
 
 import pkg from "./package.json" assert { type: "json" };
 
-const isRelease = process.env.BUILD_ENV !== "release";
+const isProduction = process.env.BUILD_ENV !== "release";
 
 export default [
     {
@@ -16,12 +16,12 @@ export default [
             {
                 file: "build/index.mjs",
                 format: "esm", // esnext
-                sourcemap: isRelease
+                sourcemap: isProduction
             },
             {
                 file: "build/index.cjs",
                 format: "cjs", // CommonJS
-                sourcemap: isRelease
+                sourcemap: isProduction
             }
         ],
         plugins: [
@@ -30,7 +30,7 @@ export default [
             typescript({
                 tsconfig: "./tsconfig.json",
                 declaration: false, // Rollup에서 .d.ts 파일 생성 비활성화
-                sourceMap: isRelease
+                sourceMap: isProduction
             }),
             terser({
                 format: {
