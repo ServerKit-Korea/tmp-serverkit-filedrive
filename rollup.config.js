@@ -39,7 +39,18 @@ export default [
             }),
             copy({
                 targets: [
-                    { src: "README.md", dest: "build" } // README 파일 복사
+                    {
+                        src: "README.module.md",
+                        dest: "build",
+                        rename: "README.md",
+                        transform(contents) {
+                            // contents를 문자열로 변환한 후 %%VERSION%% 및 %%BUILD%%를 실제 버전, 빌드 종류로 치환
+                            return contents
+                                .toString()
+                                .replace(/%%VERSION%%/g, pkg.version)
+                                .replace(/%%BUILD%%/g, isProduction ? "Release-brightgreen" : "Debug-blue");
+                        }
+                    }
                 ]
             })
         ],
