@@ -1,0 +1,507 @@
+{
+    "scm": [
+        {
+            "id": "3f70ddf4-4a1f-44e2-9e5e-f8c1b5e17b99",
+            "fields": [
+                {
+                    "name": "post_id",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "like": null,
+                        "gte": null,
+                        "lte": null,
+                        "regex": null,
+                        "unique": true
+                    },
+                    "next": []
+                },
+                {
+                    "name": "title",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {},
+                    "next": []
+                },
+                {
+                    "name": "content",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {},
+                    "next": []
+                },
+                {
+                    "name": "titleImage",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "image",
+                    "restrictions": {
+                        "gte": 100,
+                        "gte_wPx": 150,
+                        "in_colorProfile": [
+                            "sRPG"
+                        ]
+                    },
+                    "next": []
+                },
+                {
+                    "name": "tags",
+                    "description": "",
+                    "attribute": {
+                        "isArray": true,
+                        "canBeNull": false
+                    },
+                    "type": "enum",
+                    "restrictions": {
+                        "in": [
+                            "H",
+                            "T"
+                        ]
+                    },
+                    "idx": 4,
+                    "next": []
+                },
+                {
+                    "name": "contents",
+                    "description": "",
+                    "attribute": {
+                        "isArray": true,
+                        "canBeNull": false
+                    },
+                    "type": "object",
+                    "restrictions": {},
+                    "idx": 5,
+                    "next": [
+                        {
+                            "name": "content",
+                            "description": "",
+                            "attribute": {
+                                "isArray": false,
+                                "canBeNull": false
+                            },
+                            "type": "string",
+                            "restrictions": {},
+                            "idx": 0,
+                            "next": []
+                        },
+                        {
+                            "name": "createdAt",
+                            "description": "",
+                            "attribute": {
+                                "isArray": false,
+                                "canBeNull": false
+                            },
+                            "type": "date",
+                            "restrictions": {
+                                "gte": null,
+                                "lte": null
+                            },
+                            "idx": 1,
+                            "next": []
+                        },
+                        {
+                            "name": "replies",
+                            "description": "",
+                            "attribute": {
+                                "isArray": true,
+                                "canBeNull": false
+                            },
+                            "type": "object",
+                            "restrictions": {},
+                            "idx": 2,
+                            "next": [
+                                {
+                                    "name": "content",
+                                    "description": "",
+                                    "attribute": {
+                                        "isArray": false,
+                                        "canBeNull": false
+                                    },
+                                    "type": "string",
+                                    "restrictions": {},
+                                    "idx": 0,
+                                    "next": []
+                                },
+                                {
+                                    "name": "createdAt",
+                                    "description": "",
+                                    "attribute": {
+                                        "isArray": false,
+                                        "canBeNull": false
+                                    },
+                                    "type": "date",
+                                    "restrictions": {
+                                        "gte": null,
+                                        "lte": null
+                                    },
+                                    "idx": 1,
+                                    "next": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "postdetail",
+                    "description": "",
+                    "attribute": {
+                        "isArray": true,
+                        "canBeNull": false
+                    },
+                    "type": "object",
+                    "restrictions": {},
+                    "idx": 6,
+                    "next": [
+                        {
+                            "name": "views",
+                            "description": "",
+                            "attribute": {
+                                "isArray": false,
+                                "canBeNull": false
+                            },
+                            "type": "string",
+                            "restrictions": {},
+                            "idx": 0,
+                            "next": []
+                        },
+                        {
+                            "name": "likes",
+                            "description": "",
+                            "attribute": {
+                                "isArray": false,
+                                "canBeNull": false
+                            },
+                            "type": "enum",
+                            "restrictions": {
+                                "in": [
+                                    "dog",
+                                    "cat"
+                                ]
+                            },
+                            "idx": 1,
+                            "next": []
+                        },
+                        {
+                            "name": "authorDetail",
+                            "description": "",
+                            "attribute": {
+                                "isArray": true,
+                                "canBeNull": false
+                            },
+                            "type": "object",
+                            "restrictions": {},
+                            "idx": 2,
+                            "next": [
+                                {
+                                    "name": "name",
+                                    "description": "",
+                                    "attribute": {
+                                        "isArray": false,
+                                        "canBeNull": false
+                                    },
+                                    "type": "string",
+                                    "restrictions": {},
+                                    "idx": 0,
+                                    "next": []
+                                },
+                                {
+                                    "name": "bio",
+                                    "description": "",
+                                    "attribute": {
+                                        "isArray": false,
+                                        "canBeNull": false
+                                    },
+                                    "type": "string",
+                                    "restrictions": {},
+                                    "idx": 1,
+                                    "next": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "f4f703dd-4a1f-56dd-ff41-8c1b5e9f17b9",
+            "fields": [
+                {
+                    "name": "id",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "like": null,
+                        "gte": null,
+                        "lte": null,
+                        "regex": null
+                    },
+                    "idx": 0,
+                    "next": []
+                },
+                {
+                    "name": "projectId",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "like": null,
+                        "gte": null,
+                        "lte": null,
+                        "regex": null
+                    },
+                    "idx": 1,
+                    "next": []
+                },
+                {
+                    "name": "name",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {},
+                    "idx": 2,
+                    "next": []
+                },
+                {
+                    "name": "description",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "like": null,
+                        "gte": null,
+                        "lte": null,
+                        "regex": null
+                    },
+                    "idx": 3,
+                    "next": []
+                },
+                {
+                    "name": "learningDataIds",
+                    "description": "",
+                    "attribute": {
+                        "isArray": true,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "regex": null
+                    },
+                    "idx": 4,
+                    "next": []
+                },
+                {
+                    "name": "resources",
+                    "description": "",
+                    "attribute": {
+                        "isArray": true,
+                        "canBeNull": false
+                    },
+                    "type": "object",
+                    "restrictions": {},
+                    "idx": 5,
+                    "next": [
+                        {
+                            "name": "unit",
+                            "description": "",
+                            "attribute": {
+                                "isArray": false,
+                                "canBeNull": false
+                            },
+                            "type": "enum",
+                            "restrictions": {
+                                "in": [
+                                    "H",
+                                    "MB"
+                                ],
+                                "nin": null
+                            },
+                            "idx": 0,
+                            "next": []
+                        },
+                        {
+                            "name": "id",
+                            "description": "",
+                            "attribute": {
+                                "isArray": false,
+                                "canBeNull": false
+                            },
+                            "type": "string",
+                            "restrictions": {
+                                "like": null,
+                                "gte": null,
+                                "lte": null,
+                                "regex": null
+                            },
+                            "idx": 1,
+                            "next": []
+                        },
+                        {
+                            "name": "amount",
+                            "description": "",
+                            "attribute": {
+                                "isArray": false,
+                                "canBeNull": false
+                            },
+                            "type": "number",
+                            "restrictions": {
+                                "gte": null,
+                                "lte": null
+                            },
+                            "idx": 2,
+                            "next": []
+                        }
+                    ]
+                },
+                {
+                    "name": "createdAt",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "date",
+                    "restrictions": {
+                        "gte": null,
+                        "lte": null
+                    },
+                    "idx": 6,
+                    "next": []
+                },
+                {
+                    "name": "startAt",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": true
+                    },
+                    "type": "date",
+                    "restrictions": {
+                        "gte": null,
+                        "lte": null
+                    },
+                    "idx": 7,
+                    "next": []
+                },
+                {
+                    "name": "endAt",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": true
+                    },
+                    "type": "date",
+                    "restrictions": {
+                        "gte": null,
+                        "lte": null
+                    },
+                    "idx": 8,
+                    "next": []
+                },
+                {
+                    "name": "status",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "like": null,
+                        "gte": null,
+                        "lte": null,
+                        "regex": null
+                    },
+                    "idx": 9,
+                    "next": []
+                },
+                {
+                    "name": "execFileId",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "like": null,
+                        "gte": null,
+                        "lte": null,
+                        "regex": null
+                    },
+                    "idx": 10,
+                    "next": []
+                },
+                {
+                    "name": "resultFileId",
+                    "description": "",
+                    "attribute": {
+                        "isArray": false,
+                        "canBeNull": false
+                    },
+                    "type": "string",
+                    "restrictions": {
+                        "like": null,
+                        "gte": null,
+                        "lte": null,
+                        "regex": null
+                    },
+                    "idx": 11,
+                    "next": []
+                }
+            ]
+        }
+    ],
+    "dbm": [
+        {
+            "id": "f430ddc7-f1da-94ab-88ad-9f81b5e17b9c",
+            "scmId": "3f70ddf4-4a1f-44e2-9e5e-f8c1b5e17b99",
+            "configs": [
+                {
+                    "name": "post_id",
+                    "attribute": {
+                        "canBeNull": true,
+                        "isArray": false
+                    },
+                    "type": "string",
+                    "configs": {
+                        "defaultValue": "123",
+                        "isUnique": true
+                    }
+                }
+            ]
+        }
+    ],
+    "vqm": [
+        {
+            "id": "0ddc7f43-daf1-ab94-8a8d-b5e17b9c9f81"
+        }
+    ]
+}

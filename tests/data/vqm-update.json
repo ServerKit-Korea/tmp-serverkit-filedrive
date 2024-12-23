@@ -1,0 +1,19 @@
+{
+    "post_id": "data",
+    "postdetail": {
+        "update": [
+            {
+                "views": "asdasd",
+                "likes": "dog",
+                "authorDetail": {
+                    "create": [
+                        {
+                            "name": "aa",
+                            "bio": "bb"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

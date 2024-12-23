@@ -1,0 +1,48 @@
+{
+    "post_id": "data",
+    "title": "title_data",
+    "content": "all Content",
+    "titleImage": "113fddf4-aaf1-eeda-0a18-ef8c1b17b985",
+    "tags": {
+        "create": [
+            "H",
+            "T"
+        ]
+    },
+    "contents": {
+        "create": [
+            {
+                "content": "asd",
+                "createdAt": "2024-01-01",
+                "replies": {
+                    "create": [
+                        {
+                            "content": "11",
+                            "createdAt": "2024-01-10"
+                        },
+                        {
+                            "content": "22",
+                            "createdAt": "2024-01-11"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "postdetail": {
+        "create": [
+            {
+                "views": "asdasd",
+                "likes": "dog",
+                "authorDetail": {
+                    "create": [
+                        {
+                            "name": "aa",
+                            "bio": "bb"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

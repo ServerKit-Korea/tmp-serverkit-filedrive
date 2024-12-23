@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "C:/Users/FAMOZ/Desktop/SERVER KIT/serverkit Private package/serverkit-package-template/tests/filedriveTemp/generated"
+}
+
+datasource db {
+  provider = "sqlite" // SQLite 사용
+  url      = "file:./undefined" // SQLite 파일 경로
+}
+
+model Data {
+  id   Int    @id @default(autoincrement()) @map("_id")
+  name String
+  file File?  @relation("Data_file")
+}
+
+model File {
+  id          Int     @id @default(autoincrement()) @map("_id")
+  fileId      String  @unique
+  size        Int
+  filename    String
+  mimetype    String
+  path        String
+  isMapped    Boolean
+  mappedTo    String?
+  createdAt   String
+  extends     String?
+  data_file   Data?   @relation("Data_file", fields: [data_fileid], references: [id], onDelete: Cascade)
+  data_fileid Int?    @unique
+}
