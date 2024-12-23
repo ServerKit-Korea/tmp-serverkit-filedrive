@@ -40,26 +40,18 @@ jobs:
               with:
                   node-version: 20 # 로컬 환경과 동일한 Node.js 버전
 
-            # 3. Run create_npmrc.sh script to generate .npmrc (npmrc를 임시로 생성하는 로직)
-            - name: Create .npmrc file
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  chmod +x .github/create_npmrc.sh
-                  ./.github/create_npmrc.sh
-
-            # 4. Determine current branch
+            # 3. Determine current branch
             - name: Get current branch
               id: branch
               run: |
                   CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
                   echo "CURRENT_BRANCH=$CURRENT_BRANCH" >> $GITHUB_ENV
 
-            # 5. Install dependencies
+            # 4. Install dependencies
             - name: Install dependencies
               run: npm install
 
-            # 6. Build project
+            # 5. Build project
             - name: Build project
               run: |
                   if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
@@ -68,7 +60,7 @@ jobs:
                       npm run build:release
                   fi
 
-            # 7. Determine version
+            # 6. Determine version
             - name: Determine version
               run: |
                   if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
@@ -105,7 +97,7 @@ jobs:
                       echo "BRANCH_VERSION=$BRANCH_VERSION" >> $GITHUB_ENV
                   fi
 
-            # 8. Create and push tag (main branch only)
+            # 7. Create and push tag (main branch only)
             - name: Create and push tag
               run: |
                   if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
@@ -119,7 +111,7 @@ jobs:
                       fi
                   fi
 
-            # 9. Update package.json for Main branch and Release builds
+            # 8. Update package.json for Main branch and Release builds
             - name: Update package.json for Main branch Release
               if: ${{ env.CURRENT_BRANCH == 'main' && inputs.build_mode == 'release' }}
               run: |
@@ -136,11 +128,11 @@ jobs:
                   git commit -m "Bump version to ${{ env.NEW_VERSION }}"
                   git push origin main
 
-            # 10. Copy package.json to build folder
+            # 9. Copy package.json to build folder
             - name: Prepare package.json in build folder
               run: cp package.json build/package.json
 
-            # 11. Publish package
+            # 10. Publish package
             - name: Publish package
               working-directory: ./build
               run: |
