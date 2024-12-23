@@ -21,6 +21,10 @@ on:
                     - dev
                     - release
 
+permissions:
+    contents: write
+    packages: write
+
 jobs:
     version-and-publish:
         runs-on: ubuntu-latest
@@ -28,11 +32,11 @@ jobs:
         steps:
             # 1. Checkout repository
             - name: Checkout repository
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             # 2. Setup Node.js
             - name: Setup Node.js
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: 20 # 로컬 환경과 동일한 Node.js 버전
 
@@ -119,7 +123,10 @@ jobs:
             - name: Update package.json for Main branch Release
               if: ${{ env.CURRENT_BRANCH == 'main' && inputs.build_mode == 'release' }}
               run: |
-                  jq ".version = \"${{ env.NEW_VERSION }}\"" package.json > package.tmp.json
+                  jq --arg ver "${{ env.NEW_VERSION }}" '
+                  del(.private)
+                    | .version = $ver
+                  ' package.json > package.tmp.json
                   mv package.tmp.json package.json
 
                   # Git commit and push the updated package.json
@@ -140,11 +147,11 @@ jobs:
                   if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
                       if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
                           # dev 모드 활성화
-                          npm publish --tag dev
+                          npm publish --tag dev --registry=https://npm.pkg.github.com --access restricted
                       else
-                          npm publish --tag latest
+                          npm publish --tag latest --registry=https://npm.pkg.github.com --access restricted
                       fi
                   else
                       # dev 모드 활성화
-                      npm publish --tag dev
+                      npm publish --tag dev --registry=https://npm.pkg.github.com --access restricted
                   fi
