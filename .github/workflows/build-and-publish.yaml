@@ -1,0 +1,157 @@
+name: Versioning and Overwrite & Publish (Private Package)
+
+on:
+    workflow_dispatch:
+        inputs:
+            version_type:
+                description: "Version increment type (major, minor, patch)"
+                required: false
+                default: "patch"
+                type: choice
+                options:
+                    - major
+                    - minor
+                    - patch
+            build_mode:
+                description: "Build mode (dev or release)"
+                required: true
+                default: "release"
+                type: choice
+                options:
+                    - dev
+                    - release
+
+permissions:
+    contents: write
+    packages: write
+
+jobs:
+    version-and-publish:
+        runs-on: ubuntu-latest
+
+        steps:
+            # 1. Checkout repository
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            # 2. Setup Node.js
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20 # 로컬 환경과 동일한 Node.js 버전
+
+            # 3. Run create_npmrc.sh script to generate .npmrc (npmrc를 임시로 생성하는 로직)
+            - name: Create .npmrc file
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  chmod +x .github/create_npmrc.sh
+                  ./.github/create_npmrc.sh
+
+            # 4. Determine current branch
+            - name: Get current branch
+              id: branch
+              run: |
+                  CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+                  echo "CURRENT_BRANCH=$CURRENT_BRANCH" >> $GITHUB_ENV
+
+            # 5. Install dependencies
+            - name: Install dependencies
+              run: npm install
+
+            # 6. Build project
+            - name: Build project
+              run: |
+                  if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
+                      npm run build:dev
+                  else
+                      npm run build:release
+                  fi
+
+            # 7. Determine version
+            - name: Determine version
+              run: |
+                  if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
+                      # Main branch: Increment version in package.json
+                      CURRENT_VERSION=$(cat package.json | jq -r '.version')
+                      IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+                      if [[ "${{ inputs.version_type }}" == "major" ]]; then
+                          MAJOR=$((MAJOR + 1))
+                          MINOR=0
+                          PATCH=0
+                      elif [[ "${{ inputs.version_type }}" == "minor" ]]; then
+                          MINOR=$((MINOR + 1))
+                          PATCH=0
+                      else
+                          PATCH=$((PATCH + 1))
+                      fi
+
+                      NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+                      echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+                      jq ".version = \"$NEW_VERSION\"" package.json > package.tmp.json
+                      mv package.tmp.json package.json
+                  else
+                      # Non-main branch: Unique version update
+                      CURRENT_VERSION=$(cat package.json | jq -r '.version')
+                      SUFFIX_VERSION=$(npm info "$(jq -r '.name' package.json)" --json 2>/dev/null | jq -r '.versions[]' | grep "$CURRENT_VERSION-${{ env.CURRENT_BRANCH }}" | wc -l)
+                      NEXT_SUFFIX=$((SUFFIX_VERSION + 1))
+                      BRANCH_VERSION="$CURRENT_VERSION-${{ env.CURRENT_BRANCH }}-v$NEXT_SUFFIX"
+
+                      jq ".version = \"$BRANCH_VERSION\"" package.json > package.tmp.json
+                      mv package.tmp.json package.json
+
+                      echo "BRANCH_VERSION=$BRANCH_VERSION" >> $GITHUB_ENV
+                  fi
+
+            # 8. Create and push tag (main branch only)
+            - name: Create and push tag
+              run: |
+                  if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
+                      if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
+                          # dev Mode일 경우 태그에 dev 추가
+                          git tag "v${{ env.NEW_VERSION }}-dev"
+                          git push origin "v${{ env.NEW_VERSION }}-dev"
+                      else
+                          git tag "v${{ env.NEW_VERSION }}"
+                          git push origin "v${{ env.NEW_VERSION }}"
+                      fi
+                  fi
+
+            # 9. Update package.json for Main branch and Release builds
+            - name: Update package.json for Main branch Release
+              if: ${{ env.CURRENT_BRANCH == 'main' && inputs.build_mode == 'release' }}
+              run: |
+                  jq --arg ver "${{ env.NEW_VERSION }}" '
+                  del(.private)
+                    | .version = $ver
+                  ' package.json > package.tmp.json
+                  mv package.tmp.json package.json
+
+                  # Git commit and push the updated package.json
+                  git config user.name "GitHub Actions"
+                  git config user.email "actions@github.com"
+                  git add package.json
+                  git commit -m "Bump version to ${{ env.NEW_VERSION }}"
+                  git push origin main
+
+            # 10. Copy package.json to build folder
+            - name: Prepare package.json in build folder
+              run: cp package.json build/package.json
+
+            # 11. Publish package
+            - name: Publish package
+              working-directory: ./build
+              run: |
+                  if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
+                      if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
+                          # dev 모드 활성화
+                          npm publish --tag dev --registry=https://npm.pkg.github.com --access restricted
+                      else
+                          npm publish --tag latest --registry=https://npm.pkg.github.com --access restricted
+                      fi
+                  else
+                      # dev 모드 활성화
+                      npm publish --tag dev --registry=https://npm.pkg.github.com --access restricted
+                  fi
