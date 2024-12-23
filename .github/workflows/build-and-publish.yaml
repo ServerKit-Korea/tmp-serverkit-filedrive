@@ -147,11 +147,11 @@ jobs:
                   if [[ "${{ env.CURRENT_BRANCH }}" == "main" ]]; then
                       if [[ "${{ inputs.build_mode }}" == "dev" ]]; then
                           # dev 모드 활성화
-                          npm publish --tag dev --registry=https://npm.pkg.github.com --access restricted
+                          npm publish --tag dev --registry=https://npm.pkg.github.com
                       else
-                          npm publish --tag latest --registry=https://npm.pkg.github.com --access restricted
+                          npm publish --tag latest --registry=https://npm.pkg.github.com 
                       fi
                   else
                       # dev 모드 활성화
-                      npm publish --tag dev --registry=https://npm.pkg.github.com --access restricted
+                      npm publish --tag dev --registry=https://npm.pkg.github.com
                   fi

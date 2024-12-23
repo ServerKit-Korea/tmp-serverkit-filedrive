@@ -15,6 +15,7 @@
     "type": "git",
     "url": "https://github.com/ServerKit-Project/serverkit-package-template.git"
   },
+  "private": false,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
